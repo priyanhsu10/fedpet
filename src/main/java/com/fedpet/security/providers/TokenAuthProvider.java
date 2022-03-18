@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Component
 public class TokenAuthProvider implements AuthenticationProvider {
@@ -25,13 +28,13 @@ public class TokenAuthProvider implements AuthenticationProvider {
         String token= authentication.getName();
         try{
             UserInfo userInfo= jwtHelper.validate(token);
-            ((TokenAuthentication) authentication).setUser(userInfo);
-            return  authentication;
+            return  new TokenAuthentication(token,null, Arrays.asList(new SimpleGrantedAuthority("READ")),userInfo);
+
 
         }
         catch (Exception exception){
             logger.error(exception.getLocalizedMessage(),exception);
-            return  null;
+            return  authentication;
         }
 
     }

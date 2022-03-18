@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+@Component
 public class TokenAuthFilter extends OncePerRequestFilter {
    @Autowired
     private AuthenticationManager authenticationManager;
@@ -32,7 +33,7 @@ public class TokenAuthFilter extends OncePerRequestFilter {
         if(authentication.isAuthenticated()){
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
+        filterChain.doFilter(request,response);
     }
 
     @Override

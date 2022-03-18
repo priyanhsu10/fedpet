@@ -23,4 +23,8 @@ public class TokenAuthentication extends UsernamePasswordAuthenticationToken {
     public TokenAuthentication(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
+    public TokenAuthentication( Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities,UserInfo user) {
+        super(principal, credentials, authorities);
+        this.user=user;
+    }
 }

@@ -5,35 +5,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
 public class UserRegistrationDto {
     @NotBlank
-    @Max(32)
-    @Min(3)
+    @Size(max = 32,min = 3)
     private String firstname;
     @NotBlank
-    @Max(32)
-    @Min(3)
-    private String userName;
+    @Size(max = 32,min = 3)
+    private String username;
     @NotBlank
-    @Max(32)
-    @Min(3)
+    @Size(max = 32,min = 3)
     private String lastname;
 
     private UserType userType;
     @NotBlank
-    @Max(13)
-    @Min(10)
+    @Size(max = 13,min = 10)
     private String mobileNumber;
-    @Max(32)
-    @Min(4)
+    @Size(max = 32,min = 4)
     private String password;
     @Email
     @NotBlank

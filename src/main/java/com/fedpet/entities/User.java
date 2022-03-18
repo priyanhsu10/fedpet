@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -22,6 +23,8 @@ public class User {
     private String mobileNumber;
     private String password;
     private String email;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne( mappedBy = "user",cascade = CascadeType.ALL)
     private UserAddress address;
+@OneToMany(mappedBy ="user",fetch =  FetchType.LAZY,cascade = CascadeType.ALL)
+    private Set<UserGroup> userGroupSet;
 }

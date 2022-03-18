@@ -7,6 +7,9 @@ import com.fedpet.dtos.UserRegistrationDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -18,16 +21,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody UserRegistrationDto userRegistrationDto) {
+    public ResponseEntity<Void> registerUser(@Valid  @RequestBody UserRegistrationDto userRegistrationDto) {
 
         userAuthenticationService.register(userRegistrationDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResult> authenticate(@RequestBody AuthInputDto authInputDto) {
+    public ResponseEntity<AuthenticationResult> authenticate(@Valid  @RequestBody AuthInputDto authInputDto) {
 
         AuthenticationResult result = userAuthenticationService.authenticate(authInputDto);
         return ResponseEntity.ok(result);
+    }
+    @GetMapping("/ping")
+    public  String getTime(){
+        return LocalDateTime.now().toString();
     }
 }

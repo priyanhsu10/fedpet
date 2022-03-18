@@ -5,26 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class UserAddressDto {
-    private int id;
-    @NotBlank
+public class EventLocationDto {
     private String country;
-    @NotBlank
     private String city;
-    @NotBlank
-    private String state;
-    @NotBlank
+    private UserType state;
     private String area;
-    @NotNull
+    private String Address;
+    //get location from map longitude and latitude and generate above details
     private double longitude;
-    @NotNull
     private double latitude;
-
-
 }

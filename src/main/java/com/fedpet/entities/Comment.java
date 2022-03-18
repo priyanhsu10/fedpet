@@ -10,9 +10,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String commentData;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User commenter;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
     private Event event;
     private LocalDateTime commentAt;
 }

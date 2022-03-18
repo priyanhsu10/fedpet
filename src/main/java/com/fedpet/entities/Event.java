@@ -21,13 +21,22 @@ public class Event {
     private  String name;
     private  String description;
     @Lob
-    @Column(name = "image_or_video", columnDefinition="BLOB")
+    @Column(name = "image_or_video", columnDefinition="bytea")
     private  byte[] imageOrVideo;
     private  String blobName;
     private  EventLocation eventLocation;
     private LocalDate eventDate;
     private LocalTime eventTime;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "event")
     private List<Comment> comments;
+    @OneToOne(fetch =FetchType.LAZY)
+    @JoinColumn(name = "creatorId")
+    private  User creator;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "groupId", referencedColumnName = "id")
+    private  Group group;
+
+
+
 
 }

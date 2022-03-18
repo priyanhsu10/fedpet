@@ -15,7 +15,7 @@ public class Validator implements IValidator{
 
     public  void ValidateRegistration(UserRegistrationDto userRegistrationDto){
 
-      if(  userRepository.existsByUsername(userRegistrationDto.getUserName())){
+      if(  userRepository.existsByUsername(userRegistrationDto.getUsername())){
           throw new PetFedException("Username already Exist");
       }
     }

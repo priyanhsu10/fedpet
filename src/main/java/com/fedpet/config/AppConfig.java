@@ -15,13 +15,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 public class AppConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private TokenAuthProvider tokenAuthProvider;
-
+    @Autowired
+    private TokenAuthFilter tokenAuthFilter;
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -35,17 +38,15 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAt(tokenAuthFilter(), BasicAuthenticationFilter.class);
-        http.csrf().disable()
+     http.addFilterAt(tokenAuthFilter, BasicAuthenticationFilter.class);
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/api/register", "/api/authenticate").permitAll()
                 .anyRequest()
-                .authenticated();
-    }
-    @Bean
-    public TokenAuthFilter tokenAuthFilter() throws Exception {
-        return  new TokenAuthFilter();
+                .authenticated()
+                .and()
+                .httpBasic();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

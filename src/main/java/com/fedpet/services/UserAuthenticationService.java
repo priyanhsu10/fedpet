@@ -43,10 +43,16 @@ public class UserAuthenticationService implements IUserAuthenticationService {
             if(optUser.isEmpty()){
                 AuthenticationResult result= new AuthenticationResult();
                 result.setError("username/password incorrect");
+                return result;
             }
 
             User user= optUser.get();
             //validate password
+        if(!passwordEncoder.matches(authInputDto.getPassword(),user.getPassword())){
+            AuthenticationResult result= new AuthenticationResult();
+            result.setError("username/password incorrect");
+            return result;
+        }
 
             var result=  new AuthenticationResult();
             var successResult= new SuccessResult();

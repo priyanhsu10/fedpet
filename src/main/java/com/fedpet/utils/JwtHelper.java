@@ -26,6 +26,7 @@ public class JwtHelper {
         claims.put("username", user.getUsername());
         claims.put("firstname", user.getFirstname());
         claims.put("lastName", user.getLastname());
+        claims.put("subject", user.getId());
 
         Date date = new Date(System.currentTimeMillis());
         Calendar c = Calendar.getInstance();
@@ -39,18 +40,19 @@ public class JwtHelper {
                 .setClaims(claims)
                 .setIssuedAt(date)
                 .setExpiration(currentDatePlusOne)
-                .signWith(SignatureAlgorithm.ES512, secret)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
         return token;
     }
 
     public UserInfo validate(String token) {
         Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+
         return  getUserInfo(claims);
     }
     UserInfo getUserInfo(Claims claims){
         UserInfo user= new UserInfo();
-        user.setId(Integer.parseInt(claims.getSubject()));
+        user.setId((int)claims.get("subject"));
         user.setUserName(String.valueOf(claims.get("username")));
         user.setFirstName(String.valueOf(claims.get("firstname")));
         user.setLastName(String.valueOf(claims.get("lastName")));

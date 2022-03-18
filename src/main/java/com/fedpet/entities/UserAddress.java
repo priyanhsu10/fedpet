@@ -17,10 +17,13 @@ public class UserAddress {
     private int id;
     private String country;
     private String city;
-    private UserType state;
+    private String state;
     private String area;
     private double longitude;
     private double latitude;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private  User user;
 
 
 }

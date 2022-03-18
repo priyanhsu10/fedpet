@@ -1,12 +1,10 @@
 package com.fedpet.dtos;
 
-import com.fedpet.entities.UserAddress;
 import com.fedpet.entities.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Data
