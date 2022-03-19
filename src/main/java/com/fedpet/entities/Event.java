@@ -34,7 +34,7 @@ public class Event {
     private  User creator;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groupId", referencedColumnName = "id")
-    private  Group group;
+        private  Group group;
 
 
 

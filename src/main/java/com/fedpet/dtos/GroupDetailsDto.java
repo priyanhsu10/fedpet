@@ -16,7 +16,7 @@ public class GroupDetailsDto {
     private int id ;
     private  String groupName;
     private Set<GroupUserDto> members= new HashSet<>();
-    private UserType GroupUserType;
+    private UserType groupUserType;
     private LocalDateTime addedAt;
     private boolean isActive;
     private  Set<EventDto> events= new HashSet<>();

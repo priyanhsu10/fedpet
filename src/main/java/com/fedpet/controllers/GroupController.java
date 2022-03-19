@@ -14,7 +14,7 @@ import java.util.List;
 public class GroupController {
 
     @PostMapping
-    public ResponseEntity<GroupInputDto> create(@RequestBody GroupInputDto groupDto){
+    public ResponseEntity<GroupDetailsDto> create(@RequestBody GroupInputDto groupDto){
 
         return  null;
     }
@@ -24,7 +24,13 @@ public class GroupController {
         return  null;
     }
     @GetMapping("/details/{id}")
-    private  ResponseEntity<List<GroupDetailsDto>> getDetails(@PathVariable int id){
+    private  ResponseEntity<GroupDetailsDto> getDetails(@PathVariable int id){
         return null;
     }
+
+    @GetMapping("/my")
+    private  ResponseEntity<List<GroupDetailsDto>> getMyGroups(){
+        return null;
+    }
+
 }
