@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,5 +27,5 @@ public class User {
     @OneToOne( mappedBy = "user",cascade = CascadeType.ALL)
     private UserAddress address;
 @OneToMany(mappedBy ="user",fetch =  FetchType.LAZY,cascade = CascadeType.ALL)
-    private Set<UserGroup> userGroupSet;
+    private List<UserGroup> userGroupSet;
 }

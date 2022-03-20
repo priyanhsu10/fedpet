@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class Group {
     private  String groupName;
 
     @OneToMany(mappedBy ="group",fetch =  FetchType.LAZY,cascade = CascadeType.ALL)
-    private Set<UserGroup> members= new HashSet<>();
+    private List<UserGroup> members= new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "owner_id")
@@ -34,7 +35,7 @@ public class Group {
     private GroupLocation GroupLocation;
     private LocalDateTime addedAt;
     @OneToMany(mappedBy = "group",fetch = FetchType.LAZY)
-   private  Set<Event> events= new HashSet<>();
+   private  List<Event> events= new ArrayList<>();
     public  void addMember(UserGroup userGroup){
         members.add(userGroup);
     }

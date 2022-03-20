@@ -1,6 +1,7 @@
 package com.fedpet.services;
 
 import com.fedpet.Interfaces.IGroupService;
+import com.fedpet.repositories.UserRepository;
 import com.fedpet.utils.IGroupValidator;
 import com.fedpet.Interfaces.IUserDetails;
 import com.fedpet.dtos.AddMemberGroupInputDto;
@@ -26,17 +27,21 @@ public class GroupService implements IGroupService {
     private final GroupRepository groupRepository;
     private final IUserDetails iUserDetails;
     private IGroupValidator groupValidator;
+    private UserRepository userRepository;
     private EntityManager entityManager;
     private UserGroupRepository userGroupRepository;
+
     private IMapper mapper;
 
     public GroupService(GroupRepository groupRepository, IUserDetails iUserDetails, IGroupValidator groupValidator,
+                        UserRepository userRepository,
                         EntityManager entityManager,
                         UserGroupRepository userGroupRepository,
                         IMapper mapper) {
         this.groupRepository = groupRepository;
         this.iUserDetails = iUserDetails;
         this.groupValidator = groupValidator;
+        this.userRepository = userRepository;
         this.entityManager = entityManager;
         this.userGroupRepository = userGroupRepository;
         this.mapper = mapper;
@@ -48,9 +53,23 @@ public class GroupService implements IGroupService {
 
         groupValidator.validateCreate(inputDto);
         UserInfo userinfo = iUserDetails.get();
-        Group group = createGroup(inputDto, userinfo);
+        User user = entityManager.getReference(User.class, userinfo.getId());
+        Group group = createGroup(inputDto, user);
+        UserGroup userGroup= addUserGroup(group,user);
         //return part
         return getGroupDetailsDto(userinfo, group);
+    }
+
+    private UserGroup addUserGroup(Group group,User user) {
+        var userGroup = new UserGroup();
+        userGroup.setGroup(group);
+        userGroup.setUser(user);
+        userGroup.setActive(true);
+        userGroup.setUserType(UserType.FoodDonner);
+        userGroup.setAddedAt(LocalDateTime.now());
+
+        userGroup=  userGroupRepository.save(userGroup);
+       return  userGroup;
     }
 
     private GroupDetailsDto getGroupDetailsDto(UserInfo userinfo, Group group) {
@@ -64,14 +83,14 @@ public class GroupService implements IGroupService {
         userDto.setPrimaryUserType(UserType.FoodDonner);
         userDto.setId(userinfo.getId());
         userDto.setFirstname(userinfo.getFirstName());
-        userDto.setFirstname(userinfo.getLastName());
+        userDto.setLastname(userinfo.getLastName());
         groupDto.getMembers().add(userDto);
         return groupDto;
     }
 
-    private Group createGroup(GroupInputDto inputDto, UserInfo userinfo) {
+    private Group createGroup(GroupInputDto inputDto, User user) {
         var group = new Group();
-        User user = entityManager.getReference(User.class, userinfo.getId());
+
         group.setOwner(user);
         group.setGroupName(inputDto.getGroupName());
         group.setPrimaryUserType(UserType.FoodDonner);
@@ -79,22 +98,15 @@ public class GroupService implements IGroupService {
         group.setGroupLocation(groupLocation);
         group.setActive(true);
         group.setAddedAt(LocalDateTime.now());
-        //set rest of the group properties
-        var userGroup = new UserGroup();
-        userGroup.setGroup(group);
-        userGroup.setUser(user);
-        userGroup.setActive(true);
-        userGroup.setUserType(UserType.FoodDonner);
-        userGroup.setAddedAt(LocalDateTime.now());
-        group.addMember(userGroup);
-
         group = groupRepository.save(group);
-        return group;
+        //set rest of the group properties
+      return group;
     }
 
     @Override
     @Transactional
     public GroupUserDto addMember(AddMemberGroupInputDto groupDto) {
+        //TODO: validate user and group exist before
         Group group= entityManager.getReference(Group.class,groupDto.getGroupId());
         User user= entityManager.getReference(User.class,groupDto.getUserId());
         UserGroup userGroup=new UserGroup();
@@ -118,6 +130,9 @@ public class GroupService implements IGroupService {
         dto.setGroupName(group.getGroupName());
         dto.setId(group.getId());
         dto.setActive(group.isActive());
+        dto.setAddedAt(group.getAddedAt());
+        dto.setGroupUserType(group.getPrimaryUserType());
+
         var members = group.getMembers().stream().map(x -> {
             GroupUserDto groupUserDto = new GroupUserDto();
             groupUserDto.setFirstname(x.getUser().getFirstname());
