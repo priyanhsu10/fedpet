@@ -113,6 +113,7 @@ public class GroupService implements IGroupService {
         userGroup.setGroup(group);
         userGroup.setUser(user);
         userGroup.setUserType(groupDto.getUserType());
+        userGroup.setAddedAt(LocalDateTime.now());
         userGroupRepository.save(userGroup);
         return  GroupUserDto.build(userGroup);
     }

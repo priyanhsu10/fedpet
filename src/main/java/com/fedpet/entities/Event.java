@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -18,14 +20,18 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  long id;
+    @NotNull
+    @NotBlank
     private  String name;
+    @NotBlank
     private  String description;
-    @Lob
-    @Column(name = "image_or_video", columnDefinition="bytea")
-    private  byte[] imageOrVideo;
+    private  String imageOrVideo;
     private  String blobName;
+    @NotNull
     private  EventLocation eventLocation;
+    @NotNull
     private LocalDate eventDate;
+    @NotNull
     private LocalTime eventTime;
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "event")
     private List<Comment> comments;

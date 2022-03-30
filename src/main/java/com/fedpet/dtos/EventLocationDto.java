@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class EventLocationDto {
     private String country;
     private String city;
-    private UserType state;
+    private String state;
     private String area;
     private String Address;
     //get location from map longitude and latitude and generate above details
