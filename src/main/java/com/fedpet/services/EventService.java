@@ -2,6 +2,7 @@ package com.fedpet.services;
 
 import com.fedpet.Interfaces.IEventService;
 import com.fedpet.Interfaces.IUserDetails;
+import com.fedpet.dtos.EventDetailDto;
 import com.fedpet.dtos.EventDto;
 import com.fedpet.dtos.EventInputDto;
 import com.fedpet.entities.Event;
@@ -39,13 +40,18 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<EventDto> getAll() {
+    public List<EventDetailDto> getAll() {
 
         //TODO: implement the paging
         //find all event near current location around 10km
-        List<EventDto> allEvents = eventRepository.findAll().stream().map(x -> {
-            var eventDto = mapper.toEventDto(x);
+        List<EventDetailDto> allEvents = eventRepository.findAll().stream().map(x -> {
+            var eventDto = mapper.toEventDetailDto(x);
             eventDto.setEventTime(eventDto.getEventDate().atStartOfDay().toLocalTime());
+            eventDto.setCreatorInfo(mapper.tocGroupUserDto(x.getCreator()));
+            eventDto.setGroupInfo(mapper.toGroupInputLocationDto(x.getGroup().getGroupLocation()));
+
+            eventDto.getGroupInfo().setId(x.getGroup().getId());
+            eventDto.getGroupInfo().setGroupName(x.getGroup().getGroupName());
             return eventDto;
         }).collect(Collectors.toList());
         return allEvents;
@@ -76,6 +82,8 @@ public class EventService implements IEventService {
         var allEvents =eventRepository.findByCreator(user).stream().map(x -> {
             var eventDto = mapper.toEventDto(x);
             eventDto.setEventTime(eventDto.getEventDate().atStartOfDay().toLocalTime());
+            eventDto.setGroupId(x.getGroup().getId());
+            eventDto.setCreatorId(iUserDetails.get().getId());
             return eventDto;
         }).collect(Collectors.toList());
         return allEvents;

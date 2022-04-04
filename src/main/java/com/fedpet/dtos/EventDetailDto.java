@@ -14,7 +14,7 @@ public class EventDetailDto {
     private  long id;
     private  String name;
     private  String description;
-    private  byte[] imageOrVideo;
+    private  String imageOrVideo;
     private  String blobName;
     private EventLocationDto eventLocation;
     private LocalDate eventDate;

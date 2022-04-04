@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IEventService {
     // TODO: implement pagination after works completely
-     List<EventDto> getAll();
+     List<EventDetailDto> getAll();
   EventDto getById(long id);
      List<EventDto> getEventBYGroupId(int groupId);
      List<EventDto> getMyEvents();

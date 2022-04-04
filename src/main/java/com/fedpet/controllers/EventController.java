@@ -24,7 +24,7 @@ public class EventController {
     return ResponseEntity.ok(iEventService.create(inputDto));
 }
     @GetMapping("/getEvents")
-    public ResponseEntity<List<EventDto>> get(){
+    public ResponseEntity<List<EventDetailDto>> get(){
 
          return ResponseEntity.ok(iEventService.getAll());
     }
