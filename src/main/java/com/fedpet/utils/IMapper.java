@@ -11,8 +11,8 @@ public interface IMapper {
     Event toEvent(EventDto eventDto);
     EventDto toEventDto(Event event);
     EventDetailDto toEventDetailDto(Event event);
-    Comment toComment(CommentDto eventDto);
-    CommentDto toCommentDto(Comment event);
+    Comment toComment(CommentDto commentDto);
+    CommentDto toCommentDto(Comment comment);
      GroupUserDto tocGroupUserDto(User user);
      GroupInputDto toGroupInputDto(Group group);
     GroupInputDto toGroupInputLocationDto(GroupLocation groupLocation);
